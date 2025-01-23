@@ -2,16 +2,29 @@ from django.views.generic.detail import DetailView
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from django.views.generic import View 
+from django.views.generic import View, TemplateView
 from .forms import RegistrationForm, LoginForm
 from django.views.generic import View
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 
 
 User = get_user_model()
 
+
+class HomeView(TemplateView):
+    template_name = "authentication/home.html"
+
 class LoginPageView(View):
+
+    template_name = 'authentication/login.html'
+    form_class = LoginForm
+
+    def get(self, request):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+    
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -49,3 +62,8 @@ class RegistrationPageView(View):
     def form_valid(self, form):
         form.save() 
         return super().form_valid(form)
+
+@login_required
+def profilView(request):
+    user = request.user
+    return render(request, 'authentication/profil.html', {'user': user})

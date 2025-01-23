@@ -20,12 +20,17 @@ class User(AbstractUser):
         (Customer, "Customer"),
     )
 
+
+    email = models.EmailField(unique=True)
     role = models.CharField(
         max_length=30, 
         choices=ROLE_CHOICES, 
         verbose_name='Rôle', 
         default=Customer
     )
+
+    USERNAME_FIELD = 'email'  
+    REQUIRED_FIELDS = [] 
 
     objects = UserManager()
 
