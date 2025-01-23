@@ -2,10 +2,12 @@ from django.views.generic.detail import DetailView
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
-from django.views.generic import View # import des fonctions login et authenticate
+from django.views.generic import View, TemplateView # import des fonctions login et authenticate
 from . import forms
 
-from django.views.generic import View
+
+class HomeView(TemplateView):
+    template_name = "authentication/home.html"
 
 
 class LoginPageView(View):
