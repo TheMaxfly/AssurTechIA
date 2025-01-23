@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Acceuil AssurtechIA </title>
-</head>
-<body>
-    <h1> Bienvenue Chez AssurtechIA </h1>
-
+{% extends 'base.html' %}
 {% load static %}
-<img src="{% static 'image/AssurtechIA.webp' %}" alt="Logo AssurtechIA">
+{% block title %}Accueil AssurtechIA{% endblock %}
 
-
-    
-</body>
-</html>
+{% block content %}
+    <h1>Bienvenue chez AssurtechIA</h1>
+    <img src="{% static 'image/AssurtechIA.webp' %}" alt="Logo AssurtechIA">
+{% endblock %}
