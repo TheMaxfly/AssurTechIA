@@ -4,6 +4,8 @@
 
 <h1>Mon profil</h1>
 
+<a href="{% url 'home' %}">Accueil</a>
+
 <ul>
     <li>Pseudonyme : {{ user.username}}</li>
     <li>Nom : {{ user.first_name }}</li>
@@ -11,6 +13,6 @@
     <li>Email : {{ user.email }}</li>
 </ul>
 
-<button>Modifier</button>
+<a href="{% url 'edit_profil' %}">Modifier</a>
 
 {% endblock content %}

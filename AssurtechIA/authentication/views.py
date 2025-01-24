@@ -3,7 +3,7 @@ from django.views.generic.detail import DetailView
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.views.generic import View, TemplateView
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm, UpdateUserForm
 from django.views.generic import View
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
@@ -39,7 +39,8 @@ class LoginPageView(View):
             user = User.objects.filter(email=form.cleaned_data['email']).first()
             if user and user.check_password(form.cleaned_data['password']):
                 login(request, user)
-                return redirect('home')
+                # redirection vers la page profil
+                return redirect('profil')
         message = 'Identifiants invalides.'
         return render(request, self.template_name, context={'form': form, 'message': message})
 
@@ -72,6 +73,17 @@ class RegistrationPageView(View):
         return super().form_valid(form)
 
 @login_required
-def profilView(request):
+def ProfilView(request):
     user = request.user
     return render(request, 'authentication/profil.html', {'user': user})
+
+@login_required
+def EditProfil(request):
+    if request.method == 'POST':
+        form = UpdateUserForm(request.POST, instance = request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profil')
+    else:
+        form = UpdateUserForm(instance=request.user)
+    return render(request, 'authentication/edit_profil.html',{'form': form})
