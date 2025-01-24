@@ -3,17 +3,21 @@ from django.views.generic.detail import DetailView
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.views.generic import View, TemplateView
-from .forms import RegistrationForm, LoginForm, UpdateUserForm
+from .forms import RegistrationForm, LoginForm, UpdateUserForm, PredictionForm
 from django.views.generic import View, ListView
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+#from selectors import DropFeatureSelector 
+import os
+import joblib
 
 
 User = get_user_model()
 
 
-Modele = 
+#model_path = os.path.join(os.path.dirname(__file__), 'models', 'best_model.pkl')
+#model = joblib.load(model_path)
 
 
 class HomeView(TemplateView):
@@ -92,11 +96,36 @@ def EditProfil(request):
     return render(request, 'authentication/edit_profil.html',{'form': form})
 
 
-class historique(ListView):
-
-
+def calculate_bmi(weight, height):
+        height_m = height / 100.0  
+        bmi = weight / (height_m ** 2)
+        return bmi
 
 class PredictionView(View):
+    template_name = 'authentication/prediction.html'
+
+
+    def get(self, request):
+        form = PredictionForm()
+        return render(request, self.template_name, {'form': form})
+    
+    def post(self, request):
+        form = PredictionForm(request.POST)
+        if form.is_valid():
+            age = form.cleaned_data['age']
+            weight = form.cleaned_data['weight']
+            size = form.cleaned_data['size']
+            number_children = form.cleaned_data['children'] 
+            is_smoker = form.cleaned_data['smoker']
+            region = form.cleaned_data['region']
+            bmi = calculate_bmi(weight, size)
+
+            # Effectuer la prédiction
+            prediction_input = [[age, weight, size, number_children, is_smoker, region, bmi ]]  
+            prediction_result = model.predict(prediction_input)
+
+            return render(request, self.template_name, {'form': form, 'result': prediction_result})
+        return render(request, self.template_name, {'form': form})
 
 
 

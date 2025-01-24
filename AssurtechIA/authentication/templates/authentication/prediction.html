@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Faire une prédiction</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Prédire</button>
+    </form>
+    {% if result %}
+        <h2>Résultat de la prédiction : {{ result }}</h2>
+    {% endif %}
+{% endblock content %}
