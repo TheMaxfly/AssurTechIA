@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <a href="{% url 'profil' %}">Retour au profil</a>
+    
+    <h2>Modifier mon profil</h2>
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit" >Modifier mon profil</button>
+    </form>
+{% endblock content %}
