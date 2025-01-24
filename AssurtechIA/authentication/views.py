@@ -89,6 +89,14 @@ def EditProfil(request):
     return render(request, 'authentication/edit_profil.html',{'form': form})
 
 
+@login_required
+def PredictionHistorical(request):
+    user = request.user
+    predictions = Prediction.object.all()
+    context={
+        'predictions': predictions
+    }
+    return render(request=request, template_name='authentication/prediction_historical.html', context=context)
 
 
    
