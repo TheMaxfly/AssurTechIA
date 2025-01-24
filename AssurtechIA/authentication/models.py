@@ -43,7 +43,11 @@ class User(AbstractUser):
     
 
 class Prediction (models.Model):  
-
+    
+     
+    class Is_smoker (models.TextChoices):
+        oui='oui'
+        non='non'
 
 
     class Genre (models.TextChoices):
@@ -52,7 +56,7 @@ class Prediction (models.Model):
 
     genre=models.fields.CharField(choices=Genre.choices,max_length=10)
     
-    is_smoker=bool
+    is_smoker=models.fields.CharField(choices=Is_smoker.choices,max_length=10)
 
     class Region (models.TextChoices):
 
@@ -69,7 +73,7 @@ class Prediction (models.Model):
 
     size = models.fields.IntegerField(validators=[MinValueValidator(100),MaxValueValidator(260)]) 
 
-    bmi = models.fields.FloatField
+    bmi = models.FloatField(null=True, blank=True)
 
     number_children = models.fields.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)]) 
 

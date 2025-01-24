@@ -1,6 +1,6 @@
 # authentication/forms.py
 from django import forms
-from .models import User
+from .models import User, Prediction
 
 class LoginForm(forms.Form):
     email = forms.CharField(max_length=63, label='email')
@@ -26,3 +26,16 @@ class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'username', 'last_name', 'first_name', 'role']
+
+        
+class PredictionForm(forms.ModelForm):
+
+    age = forms.IntegerField(label='age')
+    size = forms.IntegerField(label='taille')
+    weight = forms.IntegerField(label='poids')
+    number_children = forms.IntegerField(label='nombre d\'enfants')
+    is_smoker = forms.BooleanField(label='est_il_fumeur')
+    region = forms.ChoiceField(choices=Prediction.Region.choices, label='Région')
+
+
+
