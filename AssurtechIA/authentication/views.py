@@ -4,13 +4,16 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.views.generic import View, TemplateView
 from .forms import RegistrationForm, LoginForm, UpdateUserForm
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 
 
 User = get_user_model()
+
+
+Modele = 
 
 
 class HomeView(TemplateView):
@@ -87,3 +90,14 @@ def EditProfil(request):
     else:
         form = UpdateUserForm(instance=request.user)
     return render(request, 'authentication/edit_profil.html',{'form': form})
+
+
+class historique(ListView):
+
+
+
+class PredictionView(View):
+
+
+
+   
