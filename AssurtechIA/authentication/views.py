@@ -16,6 +16,14 @@ User = get_user_model()
 class HomeView(TemplateView):
     template_name = "authentication/home.html"
 
+
+class LogoutView(View):
+    
+    def get(self, request):
+        logout(request)
+        return redirect('home')
+
+
 class LoginPageView(View):
 
     template_name = 'authentication/login.html'
