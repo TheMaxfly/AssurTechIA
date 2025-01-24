@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.core.validators import MaxValueValidator,MinValueValidator
+
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None, **extra_fields):
@@ -36,3 +38,40 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+    
+
+    
+
+class Prediction (models.Model):  
+
+
+
+    class Genre (models.TextChoices):
+       homme = 'homme'  
+       femme = 'femme'
+
+    genre=models.fields.CharField(choices=Genre.choices,max_length=10)
+    
+    is_smoker=bool
+
+    class Region (models.TextChoices):
+
+        southwest = 'sud-ouest'
+        northwest = 'nord-ouest'
+        southeast =  'sud-est'
+        northeast = 'nord-est'
+
+    region= models.fields.CharField(choices=Region.choices,max_length=10)
+
+    age = models.fields.IntegerField(validators=[MinValueValidator(16),MaxValueValidator(100)]) 
+
+    weight = models.fields.IntegerField(validators=[MinValueValidator(20),MaxValueValidator(450)]) 
+
+    size = models.fields.IntegerField(validators=[MinValueValidator(100),MaxValueValidator(260)]) 
+
+    bmi = models.fields.FloatField
+
+    number_children = models.fields.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)]) 
+
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+
