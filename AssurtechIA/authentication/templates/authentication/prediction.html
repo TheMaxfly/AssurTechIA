@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <head>
+    <h1>Faire une prédiction</h1>
+    <li><a href="{% url 'prediction' %}">Historique des prédictions</a></li>
+    </head>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Prédire</button>
+    </form>
+    {% if result is not None %}
+    <p>IMC calculé : {{ bmi|floatformat:2 }}</p>
+    <h2>Résultat de la prédiction : {{ result|floatformat:2 }} €</h2>
+{% endif %}
+{% endblock content %}

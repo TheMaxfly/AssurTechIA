@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Historique des prédictions</h1>
+
+<a href="{% url 'profil' %}">Retour</a>
+
+{% for prediction in predictions %}
+    <ul>  
+        <li>Quel est votre genre ? : {{prediction.genre}}</li>
+        <li>QUel âge avez_vous ? : {{ prediction.age}}</li>
+        <li>Êtes-vous fumeur ? : {{ prediction.is_smoker }} </li>
+        <li>Dans quelle région habitez-vous ? : {{ prediction.region }}</li>
+        <li>Quelle est votre taille ? : {{ prediction.size }}</li>
+        <li>Quelle est votre poids ? : {{ prediction.weight}}</li>
+        <li>Combien d'enfants avez-vous ? : {{ prediction.number_children}}</li>
+        <li>Votre BMI : {{ prediction.bmi }}</li>
+    </ul>
+{% endfor %}
+
+{% endblock content %}
