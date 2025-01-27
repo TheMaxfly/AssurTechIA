@@ -41,42 +41,29 @@ class User(AbstractUser):
     
 
     
-
-class Prediction (models.Model):  
+class Prediction(models.Model):
+    class Is_smoker(models.TextChoices):
+        oui = 'oui'
+        non = 'non'
     
-     
-    class Is_smoker (models.TextChoices):
-        oui='oui'
-        non='non'
-
-
-    class Genre (models.TextChoices):
-       homme = 'homme'  
-       femme = 'femme'
-
-    genre=models.fields.CharField(choices=Genre.choices,max_length=10)
+    class Genre(models.TextChoices):
+        homme = 'homme'
+        femme = 'femme'
     
-    is_smoker=models.fields.CharField(choices=Is_smoker.choices,max_length=10)
-
-    class Region (models.TextChoices):
-
+    class Region(models.TextChoices):
         southwest = 'sud-ouest'
         northwest = 'nord-ouest'
-        southeast =  'sud-est'
+        southeast = 'sud-est'
         northeast = 'nord-est'
-
-    region= models.fields.CharField(choices=Region.choices,max_length=10)
-
-    age = models.fields.IntegerField(validators=[MinValueValidator(16),MaxValueValidator(100)]) 
-
-    weight = models.fields.IntegerField(validators=[MinValueValidator(20),MaxValueValidator(450)]) 
-
-    size = models.fields.IntegerField(validators=[MinValueValidator(100),MaxValueValidator(260)]) 
-
+    
+    genre = models.CharField(choices=Genre.choices, max_length=10)
+    is_smoker = models.CharField(choices=Is_smoker.choices, max_length=10)
+    region = models.CharField(choices=Region.choices, max_length=10)
+    age = models.IntegerField(validators=[MinValueValidator(16), MaxValueValidator(100)])
+    weight = models.IntegerField(validators=[MinValueValidator(20), MaxValueValidator(450)])
+    size = models.IntegerField(validators=[MinValueValidator(100), MaxValueValidator(260)])
     bmi = models.FloatField(null=True, blank=True)
-
-    number_children = models.fields.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)]) 
-
+    number_children = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(100)])
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     prediction_charge = models.FloatField(null=True, blank=True)

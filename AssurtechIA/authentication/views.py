@@ -9,11 +9,15 @@ from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from authentication.models import Prediction, User
-
+from .data.functions_model import InsurancePredictor 
 #from selectors import DropFeatureSelector 
 from .modells.functions_model import transform_bmi, bmi_calculation
 import os
 import joblib
+import numpy
+import pandas as pd
+import math
+import pickle
 
 import cloudpickle 
 import pickle
@@ -27,8 +31,11 @@ model = joblib.load(model_path)
 
 User = get_user_model()
 
-#model_path = os.path.join(os.path.dirname(__file__), 'models', 'best_model.pkl')
-#model = joblib.load(model_path)
+
+model_path = os.path.join(os.path.dirname(__file__), 'data', 'best_model.pkl')
+with open(model_path, 'rb') as f:
+    base_model = joblib.load(f)
+predictor = InsurancePredictor(base_model)
 
 class HomeView(TemplateView):
     template_name = "authentication/home.html"
@@ -116,6 +123,10 @@ def PredictionHistorical(request):
 #         height_m = height / 100.0  
 #         bmi = weight / (height_m ** 2)
 #         return bmi
+# def calculate_bmi(weight, height):
+#         height_m = height / 100.0  
+#         bmi = weight / (height_m ** 2)
+#         return bmi
 
 class PredictionView(View):
     template_name = 'authentication/prediction.html'
@@ -127,6 +138,19 @@ class PredictionView(View):
     def post(self, request):
         form = PredictionForm(request.POST)
         if form.is_valid():
+             try:
+           
+                age = form.cleaned_data['age']
+                size = form.cleaned_data['size']
+                weight = form.cleaned_data['weight']
+                number_children = form.cleaned_data['number_children']
+                is_smoker = form.cleaned_data['is_smoker']
+                region = form.cleaned_data['region']
+                genre = form.cleaned_data['genre']
+            
+            # Conversion
+                genre, region, is_smoker = InsurancePredictor.convert_to_english(genre, region, is_smoker)
+                print(f"Converted values: Genre={genre}, Region={region}, Smoker={is_smoker}")
 
             genre = form.cleaned_data['genre']
             if genre == 'homme':
@@ -173,13 +197,65 @@ class PredictionView(View):
             prediction_charge = round(pre_prediction_charge[0],2)
             print(prediction_charge)
 
+            # Calcul du BMI
+                if size <= 0:
+                    raise ValueError("La taille doit être supérieure à zéro.")
+                bmi = InsurancePredictor.bmi_calculation(weight, size)
+                print(f"Calculated BMI: {bmi}")
+
+            # Préparation des données pour le modèle
+                input_data = pd.DataFrame({
+                'age': [age],
+                'size': [size],
+                'weight': [weight],
+                'number_children': [number_children],
+                'is_smoker': [is_smoker],
+                'region': [region],
+                'genre': [genre],
+                'bmi': [bmi]
+            })
+                print(input_data)
+                print(f"Input data for prediction: {input_data}")
+
+           
+                pre_prediction_charge = predictor.predict(input_data)
+                prediction_charge = round(pre_prediction_charge[0],2)
+                print(prediction_charge)
+
+            # Sauvegarde
+                Prediction.objects.create(
+                user=request.user,
+                age=age,
+                size=size,
+                weight=weight,
+                number_children=number_children,
+                is_smoker=is_smoker,
+                region=region,
+                genre=genre,
+                bmi=bmi,
+                prediction_charge=prediction_charge
+            )
+
+            # Contexte
+                context = {
+                'form': form,
+                'result': prediction_charge,
+                'bmi': bmi
+            }
+                return render(request, self.template_name, context)
+
+             except Exception as e:
+                error_message = f"Une erreur s'est produite : {str(e)}"
+                print(f"Erreur : {error_message}")
+                context = {
+                'form': form,
+                'error_message': error_message
+            }
+                return render(request, self.template_name, context)
+
             # Effectuer la prédiction
             # prediction_input = [[age, weight, size, number_children, is_smoker, region, bmi]]  
             # prediction_result = model.predict(prediction_input)
 
             return render(request, self.template_name, {'form': form})
         return render(request, self.template_name, {'form': form})
-
-
-
-   

@@ -14,4 +14,5 @@ urlpatterns = [
     path('profil/edit/', EditProfil, name='edit_profil'),
     path("historical/", PredictionHistorical, name='historical'),
     path("prediction/", PredictionView.as_view(), name="prediction")
+    
 ]
