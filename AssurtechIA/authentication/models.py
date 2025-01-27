@@ -79,3 +79,5 @@ class Prediction (models.Model):
 
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
+    prediction_charge = models.FloatField(null=True, blank=True)
+
