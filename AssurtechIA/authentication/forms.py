@@ -1,7 +1,7 @@
 # authentication/forms.py
 from django import forms
 from .models import User, Prediction
-from .data.functions_model import transform_bmi, bmi_calculation
+
 
 class LoginForm(forms.Form):
     email = forms.CharField(max_length=63, label='email')
