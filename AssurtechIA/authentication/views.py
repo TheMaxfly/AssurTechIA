@@ -9,17 +9,23 @@ from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from authentication.models import Prediction, User
+
 #from selectors import DropFeatureSelector 
+from .modells.functions_model import transform_bmi, bmi_calculation
 import os
 import joblib
 
+import cloudpickle 
+import pickle
+
+import math
+import numpy as np
+import pandas as pd
 
 User = get_user_model()
 
-
 #model_path = os.path.join(os.path.dirname(__file__), 'models', 'best_model.pkl')
 #model = joblib.load(model_path)
-
 
 class HomeView(TemplateView):
     template_name = "authentication/home.html"
@@ -111,7 +117,6 @@ def calculate_bmi(weight, height):
 class PredictionView(View):
     template_name = 'authentication/prediction.html'
 
-
     def get(self, request):
         form = PredictionForm()
         return render(request, self.template_name, {'form': form})
@@ -119,17 +124,51 @@ class PredictionView(View):
     def post(self, request):
         form = PredictionForm(request.POST)
         if form.is_valid():
-            age = form.cleaned_data['age']
-            weight = form.cleaned_data['weight']
-            size = form.cleaned_data['size']
-            number_children = form.cleaned_data['children'] 
-            is_smoker = form.cleaned_data['smoker']
+
+            genre = form.cleaned_data['genre']
+            if genre == 'homme':
+                genre = 'male'
+            else:
+                genre = 'female'
+
+            age = int(form.cleaned_data['age'])
+
+            weight = int(form.cleaned_data['weight'])
+
+            size = int(form.cleaned_data['size'])
+
+            number_children = int(form.cleaned_data['number_children'])
+
+            is_smoker = form.cleaned_data['is_smoker']
+            if is_smoker == 'oui':
+                is_smoker = 'yes'
+            else:
+                is_smoker = 'no'
+            
             region = form.cleaned_data['region']
+            if region == 'sud-ouest':
+                region = 'southwest'
+            elif region == "nord-ouest":
+                region = 'northwest'
+            elif region == 'sud-est':
+                region = 'southeast'
+            elif region == 'nord-est':
+                region = 'northeast'
+
             bmi = calculate_bmi(weight, size)
 
+            input_data = pd.DataFrame({
+                "age": [age],
+                "sex": [genre],
+                "bmi": [bmi],
+                "children": [number_children],
+                "smoker": [is_smoker],
+                "region": [region]
+            })
+
             # Effectuer la prédiction
-            prediction_input = [[age, weight, size, number_children, is_smoker, region, bmi ]]  
-            prediction_result = model.predict(prediction_input)
+            # prediction_input = [[age, weight, size, number_children, is_smoker, region, bmi]]  
+            # prediction_result = model.predict(prediction_input)
 
             return render(request, self.template_name, {'form': form, 'result': prediction_result})
         return render(request, self.template_name, {'form': form})

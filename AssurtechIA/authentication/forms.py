@@ -2,6 +2,7 @@
 from django import forms
 from .models import User, Prediction
 
+
 class LoginForm(forms.Form):
     email = forms.CharField(max_length=63, label='email')
     password = forms.CharField(max_length=63, widget=forms.PasswordInput, label='Mot de passe')
@@ -30,12 +31,12 @@ class UpdateUserForm(forms.ModelForm):
         
 class PredictionForm(forms.ModelForm):
 
-    age = forms.IntegerField(label='age')
-    size = forms.IntegerField(label='taille')
-    weight = forms.IntegerField(label='poids')
-    number_children = forms.IntegerField(label='nombre d\'enfants')
-    is_smoker = forms.BooleanField(label='est_il_fumeur')
-    region = forms.ChoiceField(choices=Prediction.Region.choices, label='Région')
-
-
-
+    # age = forms.IntegerField(label='age')
+    # size = forms.IntegerField(label='taille')
+    # weight = forms.IntegerField(label='poids')
+    # number_children = forms.IntegerField(label='nombre d\'enfants')
+    # is_smoker = forms.BooleanField(label='est_il_fumeur')
+    # region = forms.ChoiceField(choices=Prediction.Region.choices, label='Région')
+    class Meta:
+        model = Prediction
+        fields = ['genre','age','size', 'weight', 'number_children','is_smoker', 'region']

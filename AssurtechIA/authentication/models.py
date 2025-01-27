@@ -81,3 +81,5 @@ class Prediction (models.Model):
 
     prediction_charge = models.FloatField(null=True, blank=True)
 
+    prediction_date = models.DateTimeField(blank=True, null=True)
+
