@@ -22,6 +22,9 @@ import pickle
 import cloudpickle 
 import pickle
 
+
+from django.shortcuts import render
+
 User = get_user_model()
 
 
@@ -30,6 +33,9 @@ with open(model_path, 'rb') as f:
     base_model = joblib.load(f)
 
 predictor = InsurancePredictor(base_model)
+
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
 
 class HomeView(TemplateView):
     template_name = "authentication/home.html"
