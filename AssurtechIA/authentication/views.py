@@ -9,16 +9,21 @@ from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from authentication.models import Prediction, User
+from .data.functions_model import transform_bmi, bmi_calculation
 #from selectors import DropFeatureSelector 
 import os
 import joblib
+import numpy
+import pandas as pd
+import math
+import pickle
 
 
 User = get_user_model()
 
 
-#model_path = os.path.join(os.path.dirname(__file__), 'models', 'best_model.pkl')
-#model = joblib.load(model_path)
+model_path = os.path.join(os.path.dirname(__file__), 'data', 'best_model.pkl')
+model = joblib.load(model_path)
 
 
 class HomeView(TemplateView):
@@ -103,14 +108,13 @@ def PredictionHistorical(request):
     return render(request, 'authentication/prediction_historical.html', context={"predictions": predictions})
 
 
-def calculate_bmi(weight, height):
-        height_m = height / 100.0  
-        bmi = weight / (height_m ** 2)
-        return bmi
+# def calculate_bmi(weight, height):
+#         height_m = height / 100.0  
+#         bmi = weight / (height_m ** 2)
+#         return bmi
 
 class PredictionView(View):
     template_name = 'authentication/prediction.html'
-
 
     def get(self, request):
         form = PredictionForm()
@@ -119,21 +123,59 @@ class PredictionView(View):
     def post(self, request):
         form = PredictionForm(request.POST)
         if form.is_valid():
-            age = form.cleaned_data['age']
-            weight = form.cleaned_data['weight']
-            size = form.cleaned_data['size']
-            number_children = form.cleaned_data['children'] 
-            is_smoker = form.cleaned_data['smoker']
-            region = form.cleaned_data['region']
-            bmi = calculate_bmi(weight, size)
-
-            # Effectuer la prédiction
-            prediction_input = [[age, weight, size, number_children, is_smoker, region, bmi ]]  
-            prediction_result = model.predict(prediction_input)
-
-            return render(request, self.template_name, {'form': form, 'result': prediction_result})
+            try:
+                # Récupération des données du formulaire
+                age = form.cleaned_data['age']
+                weight = form.cleaned_data['weight']
+                size = form.cleaned_data['size']
+                number_children = form.cleaned_data['number_children']
+                is_smoker = form.cleaned_data['is_smoker']
+                region = form.cleaned_data['region']
+                genre = form.cleaned_data['genre']
+                
+                # Calcul du BMI
+                bmi = bmi_calculation(weight, size)
+                
+                # Création d'un DataFrame pour la prédiction
+                input_data = pd.DataFrame({
+                    'age': [age],
+                    'weight': [weight],
+                    'size': [size],
+                    'number_children': [number_children],
+                    'is_smoker': [is_smoker],
+                    'region': [region],
+                    'genre': [genre],
+                    'bmi': [bmi]
+                })
+                
+                # Prédiction
+                prediction_result = float(model.predict(input_data)[0])
+                
+                # Sauvegarde de la prédiction
+                prediction = Prediction.objects.create(
+                    user=request.user,
+                    age=age,
+                    weight=weight,
+                    size=size,
+                    number_children=number_children,
+                    is_smoker=is_smoker,
+                    region=region,
+                    genre=genre,
+                    bmi=bmi,
+                    prediction_charge=prediction_result  # Utilisez le nom correct du champ
+                )
+                
+                return render(request, self.template_name, {
+                    'form': form,
+                    'result': prediction_result,
+                    'bmi': bmi
+                })
+                
+            except Exception as e:
+                print(f"Erreur : {str(e)}")  # Pour le débogage
+                return render(request, self.template_name, {
+                    'form': form,
+                    'error_message': f"Une erreur s'est produite : {str(e)}"
+                })
+        
         return render(request, self.template_name, {'form': form})
-
-
-
-   
