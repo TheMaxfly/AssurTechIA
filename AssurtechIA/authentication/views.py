@@ -22,6 +22,9 @@ import math
 import numpy as np
 import pandas as pd
 
+model_path = os.path.join(os.path.dirname(__file__), 'modells', 'model_pipeline_v2.pkl')
+model = joblib.load(model_path)
+
 User = get_user_model()
 
 #model_path = os.path.join(os.path.dirname(__file__), 'models', 'best_model.pkl')
@@ -109,10 +112,10 @@ def PredictionHistorical(request):
     return render(request, 'authentication/prediction_historical.html', context={"predictions": predictions})
 
 
-def calculate_bmi(weight, height):
-        height_m = height / 100.0  
-        bmi = weight / (height_m ** 2)
-        return bmi
+# def calculate_bmi(weight, height):
+#         height_m = height / 100.0  
+#         bmi = weight / (height_m ** 2)
+#         return bmi
 
 class PredictionView(View):
     template_name = 'authentication/prediction.html'
@@ -155,7 +158,7 @@ class PredictionView(View):
             elif region == 'nord-est':
                 region = 'northeast'
 
-            bmi = calculate_bmi(weight, size)
+            bmi = bmi_calculation(weight, size)
 
             input_data = pd.DataFrame({
                 "age": [age],
@@ -166,11 +169,15 @@ class PredictionView(View):
                 "region": [region]
             })
 
+            pre_prediction_charge = model.predict(input_data)
+            prediction_charge = round(pre_prediction_charge[0],2)
+            print(prediction_charge)
+
             # Effectuer la prédiction
             # prediction_input = [[age, weight, size, number_children, is_smoker, region, bmi]]  
             # prediction_result = model.predict(prediction_input)
 
-            return render(request, self.template_name, {'form': form, 'result': prediction_result})
+            return render(request, self.template_name, {'form': form})
         return render(request, self.template_name, {'form': form})
 
 
