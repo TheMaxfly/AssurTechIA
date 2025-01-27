@@ -1,6 +1,6 @@
 from django.views.generic.detail import DetailView
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.views.generic import View, TemplateView
 from .forms import RegistrationForm, LoginForm, UpdateUserForm, PredictionForm
@@ -8,6 +8,7 @@ from django.views.generic import View, ListView
 from django.urls import reverse_lazy
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from authentication.models import Prediction, User
 #from selectors import DropFeatureSelector 
 import os
 import joblib
@@ -98,12 +99,10 @@ def EditProfil(request):
 
 @login_required
 def PredictionHistorical(request):
-    user = request.user
-    predictions = Prediction.object.all()
-    context={
-        'predictions': predictions
-    }
-    return render(request=request, template_name='authentication/prediction_historical.html', context=context)
+    predictions = Prediction.objects.filter(user=request.user)
+    return render(request, 'authentication/prediction_historical.html', context={"predictions": predictions})
+
+
 def calculate_bmi(weight, height):
         height_m = height / 100.0  
         bmi = weight / (height_m ** 2)
