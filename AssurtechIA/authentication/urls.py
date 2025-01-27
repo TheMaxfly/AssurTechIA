@@ -12,6 +12,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path("", HomeView.as_view(), name="home"),
     path('profil/edit/', EditProfil, name='edit_profil'),
-    #path('prediction/', PredictionView, name = 'prediction')
+    path('prediction/', PredictionView, name = 'prediction')
 
 ]

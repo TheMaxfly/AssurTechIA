@@ -78,4 +78,5 @@ class Prediction (models.Model):
     number_children = models.fields.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)]) 
 
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-
+     
+    prediction = models.FloatField(null=True, blank=True)
