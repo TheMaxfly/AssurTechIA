@@ -130,7 +130,6 @@ class PredictionView(View):
        form = PredictionForm(request.POST)
        if form.is_valid():
             try:
-         
                age = form.cleaned_data['age']
                size = form.cleaned_data['size']
                weight = form.cleaned_data['weight']
@@ -157,10 +156,8 @@ class PredictionView(View):
                 "children": [number_children],
                 "smoker": [is_smoker],
                 "region": [region]
-            })
-               print(input_data)
+                })
 
-         
                pre_prediction_charge = base_model.predict(input_data)
                prediction_charge = round(pre_prediction_charge[0],2)
                print('prediction')
@@ -173,44 +170,6 @@ class PredictionView(View):
                prediction.save()
 
                return redirect('profil')
-               # return render(request, self.template_name, context)
-
-    # def post(self, request):
-        # form = self.form_class(request.POST)
-        # if form.is_valid():
-        #     user = form.save(commit=False)
-        #     password = form.cleaned_data['password']
-        #     user.set_password(password)
-        #     user.save()
-        #     login(request, authenticate(
-        #         email=form.cleaned_data['email'],
-        #         password=password,
-        #     ))
-        #     return redirect('home')
-        # return render(request, self.template_name, context={'form': form})
-
-
-           # Sauvegarde
-        #        Prediction.objects.create(
-        #        user=request.user,
-        #        age=age,
-        #        size=size,
-        #        weight=weight,
-        #        number_children=number_children,
-        #        is_smoker=is_smoker,
-        #        region=region,
-        #        genre=genre,
-        #        bmi=bmi,
-        #        prediction_charge=prediction_charge
-        #    )
-
-           # Contexte
-        #        context = {
-        #        'form': form,
-        #        'result': prediction_charge,
-        #        'bmi': bmi
-        #    }
-
 
             except Exception as e:
                error_message = f"Une erreur s'est produite : {str(e)}"
@@ -218,7 +177,7 @@ class PredictionView(View):
                context = {
                'form': form,
                'error_message': error_message
-           }
+                }
                return render(request, self.template_name, context)
 
        return render(request, self.template_name, {'form': form})
