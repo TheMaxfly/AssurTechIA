@@ -14,11 +14,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# AssurtechIA/urls.py
+from django.conf.urls import handler404
 from django.contrib import admin
-from django.urls import path,include
-
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include('authentication.urls')),
+    # Ajoutez d'autres URLs ici
 ]
+
+handler404 = 'authentication.views.custom_404'
