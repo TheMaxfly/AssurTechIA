@@ -1,8 +1,91 @@
-{% extends 'base.html' %}
+<!-- {% extends 'base.html' %}
 {% load static %}
 {% block title %}Accueil AssurtechIA{% endblock %}
-
 {% block content %}
-    <h1>Bienvenue chez AssurtechIA</h1>
-    <img src="{% static 'image/AssurtechIA.webp' %}" alt="Logo AssurtechIA">
-{% endblock %}
+  
+<div class =" background" style = "background-image: url('{% static "image/AssurtechIA.webp" %}');"><div class="text-overlay" >
+    <h1>Bienvenue chez AssurtechIA</h1><br>
+    <p class="intro text-xl text-red-400"><strong>Bienvenue chez AssurtechIA</strong><br><br>
+        
+        Votre santé, notre priorité.<br><br>
+    
+        Chez AssurtechIA, nous croyons que chaque personne mérite un accès facile et abordable à des soins de qualité.<br>
+        Nous vous accompagnons à chaque étape de votre vie avec des solutions adaptées à vos besoins et à votre budget.
+</p>
+</div></div>
+
+{% endblock content %}-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <header class="bg-[#C6E7FF] flex justify-between items-center p-4 shadow-md">
+    
+        <div class="text-xl font-bold text-gray-800">
+            <img src="{% static "image/AssurtechIA.webp" %}" alt="Logo AssurtechIA" class="h-8">
+        </div>
+        <div class="flex gap-4">
+            <button class="bg-[#D4F6FF] text-gray-800 px-4 py-2 rounded-md hover:bg-blue-200 transition">Connexion</button>
+            <button class="bg-[#D4F6FF] text-gray-800 px-4 py-2 rounded-md hover:bg-blue-200 transition">Inscription</button>
+        </div>
+    </header>
+<!-- Diaporama Swiper -->
+<section class="p-4">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <!-- Slide 1 -->
+            <div class="swiper-slide">
+                <img src="{% static 'image/slide1.jpg' %}" alt="Slide 1">
+            </div>
+            <!-- Slide 2 -->
+            <div class="swiper-slide">
+                <img src="{% static 'image/slide2.jpg' %}" alt="Slide 2">
+            </div>
+            <!-- Slide 3 -->
+            <div class="swiper-slide">
+                <img src="{% static 'image/slide3.jpg' %}" alt="Slide 3">
+            </div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+        <!-- Add Navigation -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</section>
+
+<!-- Section Présentation -->
+<section class="p-4 bg-[#FBFBFB]">
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Présentation</h2>
+    <p class="text-gray-700">
+        Bienvenue chez AssurtechIA a completer...
+    </p>
+</section>
+
+<!-- Footer -->
+<footer class="bg-[#C6E7FF] p-4 text-center">
+    <a href="{% url 'cgu' %}" class="text-gray-800 underline">Conditions Générales d'Utilisation</a>
+    <p class="text-gray-800 mt-2">Numéro d'urgence : +1 800-123-4567</p>
+</footer>
+
+<!-- Swiper JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+</script> 
+</body>
+</html>

@@ -42,9 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "authentication",
-    'tailwind',
+    "tailwind",
     "theme",
-    'django_browser_reload',
+    "django_browser_reload",
+    
 ]
 
 MIDDLEWARE = [

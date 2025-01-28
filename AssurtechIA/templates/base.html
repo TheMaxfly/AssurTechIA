@@ -1,4 +1,5 @@
 {% load static %}
+{% load static tailwind_tags %}
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -6,22 +7,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="{% static "css/styles.css" %}">
+    <link href="{% static "css/style.css" %}" rel="stylesheet">
+    {% tailwind_css %}
 
-    <title>{% block title %}Mon Blog{% endblock %}</title>
+    <title>{% block title %}AssurtechIA{% endblock %}</title>
 </head>
-<body>
-<header>
+<body class="{% block body_class %}{% endblock %}">
+<header >
     <nav>
         <ul>
-            <li><a href="{% url 'login' %}">Se connecter</a></li>
-            <li><a href="{% url 'registration' %}">S'inscrire</a></li>
+            <li><a href="{% url 'login' %}" class="bg-blue-500 text-white px-4 py-2 rounded">Se connecter</a></li>
+        
+            <li><a href="{% url 'registration' %}" class="bg-blue-500 text-white px-4 py-2 rounded">S'inscrire</a></li>
         </ul>
     </nav>
 </header>
-    <main>
+<main class="flex items-center justify-center h-screen">
         {% block content %}{% endblock %}
-    <main>
+</main>
     <footer>
         <p>&copy; AssurtechIA </p>
     </footer>    

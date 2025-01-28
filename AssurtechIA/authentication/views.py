@@ -16,6 +16,9 @@ User = get_user_model()
 class HomeView(TemplateView):
     template_name = "authentication/home.html"
 
+    def cgu(request):
+        return render(request, 'authentication/cgu.html')
+
 class LoginPageView(View):
 
     template_name = 'authentication/login.html'
