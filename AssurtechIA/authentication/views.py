@@ -27,18 +27,14 @@ from django.shortcuts import render
 
 User = get_user_model()
 
-
-model_path = os.path.join(os.path.dirname(__file__), 'data', 'best_model.pkl')
-with open(model_path, 'rb') as f:
-    base_model = joblib.load(f)
-
-predictor = InsurancePredictor(base_model)
-
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
 
 class HomeView(TemplateView):
     template_name = "authentication/home.html"
+
+class CguView(TemplateView):
+    template_name = "authentication/conditions_gen.html"
 
 
 class LogoutView(View):
@@ -164,6 +160,11 @@ class PredictionView(View):
                 "region": [region]
                 })
 
+               model_path = os.path.join(os.path.dirname(__file__), 'data', 'best_model.pkl')
+               with open(model_path, 'rb') as f:
+                base_model = joblib.load(f)
+
+               predictor = InsurancePredictor(base_model)
                pre_prediction_charge = base_model.predict(input_data)
                prediction_charge = round(pre_prediction_charge[0],2)
                print('prediction')

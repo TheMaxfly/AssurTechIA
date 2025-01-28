@@ -18,10 +18,13 @@ Including another URLconf
 from django.conf.urls import handler404
 from django.contrib import admin
 from django.urls import path, include
+from authentication.views import HomeView, CguView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include('authentication.urls')),
+    path('', HomeView.as_view(), name='home'),
+    path('cgu',CguView.as_view(), name = 'cgu'),
     # Ajoutez d'autres URLs ici
 ]
 
