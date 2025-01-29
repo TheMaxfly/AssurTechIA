@@ -30,11 +30,18 @@ User = get_user_model()
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
 
+
 class HomeView(TemplateView):
     template_name = "authentication/home.html"
 
+
+class AboutUsView(TemplateView):
+    template_name = "authentication/about_us.html"
+    
+
 class CguView(TemplateView):
-    template_name = "authentication/conditions_gen.html"
+    
+    template_name="authentication/cgu.html"
 
 
 class LogoutView(View):
@@ -170,11 +177,11 @@ class PredictionView(View):
                print('prediction')
                print(prediction_charge)
 
-               prediction = form.save(commit=False)
-               prediction.bmi = bmi
-               prediction.prediction_charge = prediction_charge
-               prediction.user = request.user
-               prediction.save()
+            #    prediction = form.save(commit=False)
+            #    prediction.bmi = bmi
+            #    prediction.prediction_charge = prediction_charge
+            #    prediction.user = request.user
+            #    prediction.save()
 
                return redirect('profil')
 
