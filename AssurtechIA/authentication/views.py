@@ -11,13 +11,11 @@ from django.contrib.auth.decorators import login_required
 from authentication.models import Prediction, User
 from .data.functions_model import InsurancePredictor
 #from selectors import DropFeatureSelector 
-# from .data.functions_model import transform_bmi, bmi_calculation
 import os
 import joblib
 import numpy
 import pandas as pd
 import math
-import pickle
 
 import cloudpickle 
 import pickle
@@ -183,7 +181,18 @@ class PredictionView(View):
                prediction.user = request.user
                prediction.save()
 
-               return redirect('profil')
+               # stockage des données dans la session
+               request.session['age'] = age
+               request.session['size'] = size
+               request.session['weight'] = weight
+               request.session['number_children'] = number_children
+               request.session['is_smoker'] = is_smoker
+               request.session['region'] = region
+               request.session['genre'] = genre
+               request.session['bmi'] = bmi
+               request.session['prediction_charge'] = prediction_charge
+
+               return redirect('result')
 
             except Exception as e:
                error_message = f"Une erreur s'est produite : {str(e)}"
@@ -195,3 +204,27 @@ class PredictionView(View):
                return render(request, self.template_name, context)
 
        return render(request, self.template_name, {'form': form})
+
+@login_required
+def prediction_result(request):
+    age = request.session.get('age')
+    size = request.session.get('size')
+    weight = request.session.get('weight')
+    number_children = request.session.get('number_children')
+    is_smoker = request.session.get('is_smoker')
+    region = request.session.get('region')
+    genre = request.session.get('genre')
+    bmi = request.session.get('bmi')
+    prediction_charge = request.session.get('prediction_charge')
+
+    return render(request, 'authentication/result.html', {
+        'age':age, 
+        'size':size, 
+        'weight':weight, 
+        'number_children':number_children,
+        'is_smoker':is_smoker,
+        'region':region,
+        'genre':genre,
+        'bmi':bmi,
+        'prediction_charge':prediction_charge
+    })

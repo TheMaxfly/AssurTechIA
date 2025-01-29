@@ -13,28 +13,10 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+
     <header>
         {% include 'includes/header.html' %}
     </header>
-    {% comment %} <header>
-        <nav>
-            {% if user.is_authenticated  %}
-            <ul>
-                <li>Client: {{user.email }}</li>
-                <li><a href="{% url 'home' %}">Accueil</a></li>
-                <li><a href="{% url 'profil' %}">Mon profil</a></li>
-                <li><a href="{% url 'prediction' %}">Prédire</a></li>
-                <li><a href="{% url 'logout' %}">Se déconnecter</a></li>
-            </ul>
-            {% else %}
-            <ul>
-                <li><a href="{% url 'home' %}">Accueil</a></li>
-                <li><a href="{% url 'login' %}">Se connecter</a></li>
-                <li><a href="{% url 'registration' %}">S'inscrire</a></li>
-            </ul>
-            {% endif %}
-        </nav>
-    </header> {% endcomment %}
 
     <main class="w-full h-screen">
         {% block content %}{% endblock %}

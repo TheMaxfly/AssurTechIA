@@ -18,7 +18,7 @@ Including another URLconf
 from django.conf.urls import handler404
 from django.contrib import admin
 from django.urls import path, include
-from authentication.views import HomeView, CguView,AboutUsView,PredictionView
+from authentication.views import HomeView, CguView,AboutUsView,PredictionView,prediction_result
 #import authentication.views
 
 urlpatterns = [
@@ -30,6 +30,7 @@ urlpatterns = [
     path('aboutus/',AboutUsView.as_view(),name='aboutus'),
     #path('aboutus/',AboutUsView.as_view(),name='aboutus'),
     path('prediction/', PredictionView.as_view(), name='prediction'),
+    path('prediction/result/', prediction_result, name='result'),
     #path('cgu/',CguView, name="cgu"),
     # Ajoutez d'autres URLs ici
 ]
