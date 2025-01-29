@@ -2,7 +2,7 @@
 {% block content %}
     <head>
     <h1>Faire une prédiction</h1>
-    <li><a href="{% url 'prediction' %}">Historique des prédictions</a></li>
+    <a href="{% url 'historical' %}">Voir l'historique des prédictions</a>
     </head>
     <form method="post">
         {% csrf_token %}

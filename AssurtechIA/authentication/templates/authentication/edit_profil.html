@@ -1,11 +1,40 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    <a href="{% url 'profil' %}">Retour au profil</a>
-    
-    <h2>Modifier mon profil</h2>
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" >Modifier mon profil</button>
-    </form>
+    <div class="min-h-screen bg-[#FBFBFB] py-12 px-4 sm:px-6 lg:px-8">
+        <!-- Lien de retour -->
+        <a href="{% url 'profil' %}" class="inline-block text-[#e74c3c] hover:underline mb-8">Retour au profil</a>
+
+        <!-- Titre -->
+        <h2 class="text-3xl font-bold text-[#2c3e50] mb-8">Modifier mon profil</h2>
+
+        <!-- Formulaire -->
+        <form method="post" class="bg-[#D4F6FF] p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
+            {% csrf_token %}
+
+            <!-- Champs du formulaire -->
+            <div class="space-y-6">
+                {% for field in form %}
+                    <div class="space-y-2">
+                        <label class="block text-lg font-semibold text-[#2c3e50]">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <ul class="text-sm text-[#e74c3c]">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Bouton de soumission -->
+            <button type="submit" class="mt-8 w-full bg-[#FFDDAE] text-[#2c3e50] font-semibold py-3 rounded-lg hover:bg-[#e6c89d] transition duration-300">
+                Modifier mon profil
+            </button>
+        </form>
+    </div>
 {% endblock content %}

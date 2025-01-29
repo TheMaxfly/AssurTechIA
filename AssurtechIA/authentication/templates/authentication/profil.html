@@ -1,24 +1,32 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div style="background-color: #FBFBFB; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto;">
+    <h1 style="color: #005F99; text-align: center;">Mon profil</h1>
 
-<h1>Mon profil</h1>
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="{% url 'home' %}" style="color: #005F99; text-decoration: none; font-weight: bold;">Accueil</a>
+    </div>
 
-<a href="{% url 'home' %}">Accueil</a>
+    <ul style="list-style: none; padding: 0; text-align: left; background: #C6E7FF; padding: 15px; border-radius: 8px;">
+        <li><strong>Pseudonyme :</strong> {{ user.username }}</li>
+        <li><strong>Nom :</strong> {{ user.first_name }}</li>
+        <li><strong>Prénom :</strong> {{ user.last_name }}</li>
+        <li><strong>Email :</strong> {{ user.email }}</li>
+    </ul>
 
-<ul>
-    <li>Pseudonyme : {{ user.username}}</li>
-    <li>Nom : {{ user.first_name }}</li>
-    <li>Prénom : {{ user.last_name }}</li>
-    <li>Email : {{ user.email }}</li>
-</ul>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'edit_profil' %}" style="display: inline-block; background: #FFDDAE; color: black; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 10px;">Modifier</a>
+    </div>
 
-<a href="{% url 'edit_profil' %}">Modifier</a>
+    <h2 style="color: #005F99; margin-top: 40px; text-align: center;">Historique de mes prédictions</h2>
+    <div style="text-align: center; margin-top: 10px;">
+        <a href="{% url 'historical' %}" style="display: inline-block; background: #D4F6FF; color: black; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 10px;">Voir les détails</a>
+    </div>
 
-<h2>Historique de mes prédictions</h2>
-<a href="{% url 'historical' %}">Voir les détails</a>
-
-<h2>Simulation de la prime d'assurance</h2>
-<a href="{% url 'prediction' %}">Lancer une simulation</a>
-
+    <h2 style="color: #005F99; margin-top: 40px; text-align: center;">Simulation de la prime d'assurance</h2>
+    <div style="text-align: center; margin-top: 10px;">
+        <a href="{% url 'prediction' %}" style="display: inline-block; background: #D4F6FF; color: black; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 10px;">Lancer une simulation</a>
+    </div>
+</div>
 {% endblock content %}

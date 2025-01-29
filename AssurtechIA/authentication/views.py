@@ -37,8 +37,18 @@ predictor = InsurancePredictor(base_model)
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
 
+
 class HomeView(TemplateView):
     template_name = "authentication/home.html"
+
+
+class AboutUsView(TemplateView):
+    template_name = "authentication/about_us.html"
+    
+
+class CguView(TemplateView):
+    
+    template_name="authentication/cgu.html"
 
 
 class LogoutView(View):
@@ -163,17 +173,20 @@ class PredictionView(View):
                 "smoker": [is_smoker],
                 "region": [region]
                 })
+               
+               print(input_data)
 
-               pre_prediction_charge = base_model.predict(input_data)
-               prediction_charge = round(pre_prediction_charge[0],2)
-               print('prediction')
-               print(prediction_charge)
+            #    pre_prediction_charge = base_model.predict(input_data)
+            #    print(pre_prediction_charge)
+            #    prediction_charge = round(pre_prediction_charge[0],2)
+            #    print('prediction')
+            #    print(prediction_charge)
 
-               prediction = form.save(commit=False)
-               prediction.bmi = bmi
-               prediction.prediction_charge = prediction_charge
-               prediction.user = request.user
-               prediction.save()
+            #    prediction = form.save(commit=False)
+            #    prediction.bmi = bmi
+            #    prediction.prediction_charge = prediction_charge
+            #    prediction.user = request.user
+            #    prediction.save()
 
                return redirect('profil')
 

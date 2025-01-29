@@ -18,10 +18,19 @@ Including another URLconf
 from django.conf.urls import handler404
 from django.contrib import admin
 from django.urls import path, include
+from authentication.views import HomeView, CguView,AboutUsView,PredictionView
+#import authentication.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('authentication/', include('authentication.urls')),
+    path("__reload__/", include("django_browser_reload.urls")),
+    path("", HomeView.as_view(), name="home"),
+    path('cgu/',CguView.as_view(),name='cgu'),
+    path('aboutus/',AboutUsView.as_view(),name='aboutus'),
+    #path('aboutus/',AboutUsView.as_view(),name='aboutus'),
+    path('prediction/', PredictionView.as_view(), name='prediction'),
+    #path('cgu/',CguView, name="cgu"),
     # Ajoutez d'autres URLs ici
 ]
 

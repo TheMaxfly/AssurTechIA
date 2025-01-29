@@ -1,8 +1,9 @@
 {% load static %}
-
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    {% tailwind_css %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -36,7 +37,10 @@
     <main>
 
     <footer>
+
+        <li><a href="{% url 'aboutus' %}">About us</a></li>
         <p>&copy; AssurtechIA </p>
+
     </footer>    
     
 </body>
