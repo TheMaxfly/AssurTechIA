@@ -12,22 +12,14 @@
 
     <title>{% block title %}AssurtechIA{% endblock %}</title>
 </head>
-<body class="{% block body_class %}{% endblock %}">
-<header >
-    <nav>
-        <ul>
-            <li><a href="{% url 'login' %}" class="bg-blue-500 text-white px-4 py-2 rounded">Se connecter</a></li>
-        
-            <li><a href="{% url 'registration' %}" class="bg-blue-500 text-white px-4 py-2 rounded">S'inscrire</a></li>
-        </ul>
-    </nav>
+<body>
+<header>
+    {% include 'includes/header.html' %}
 </header>
-<main class="flex items-center justify-center h-screen">
+<main class="w-full h-screen">
         {% block content %}{% endblock %}
 </main>
-    <footer>
-        <p>&copy; AssurtechIA </p>
-    </footer>    
+  {% include 'includes/footer.html' %}
     
 </body>
 </html>

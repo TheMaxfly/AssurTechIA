@@ -1,3 +1,9 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background-size: cover;
     background-repeat: no-repeat;
@@ -114,4 +120,39 @@ footer a {
 footer p {
     color: #4a4a4a;
     margin-top: 0.5rem;
+}
+
+.relative {
+    width: 100%;
+    height: 50vh; /* Hauteur = moitié de l'écran */
+}
+
+@keyframes fade {
+    0% { opacity: 1; }
+    45% { opacity: 1; }
+    55% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@keyframes fade-delay {
+    0% { opacity: 0; }
+    45% { opacity: 0; }
+    55% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+.images-group {
+    display: flex;
+    transition: opacity 1s ease-in-out;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.animate-fade-carousel {
+    animation: fade 10s infinite;
+}
+
+.animate-fade-carousel-delay {
+    animation: fade-delay 10s infinite;
 }

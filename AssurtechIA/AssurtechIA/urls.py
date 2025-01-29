@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 import authentication.views
-from authentication.views import HomeView
+from authentication.views import HomeView, cgu
 
 
 urlpatterns = [
@@ -25,5 +25,6 @@ urlpatterns = [
     path('authentication/', include("authentication.urls")),
     path("", HomeView.as_view(), name="home"),
     path("__reload__/", include("django_browser_reload.urls")),
-    path("cgu/",views.cgu, name="cgu"),
+    path("cgu/",cgu, name="cgu"),
+    
 ]
