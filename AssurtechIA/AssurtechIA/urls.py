@@ -25,6 +25,7 @@ urlpatterns = [
     path('authentication/', include('authentication.urls')),
     path('', HomeView.as_view(), name='home'),
     path('cgu',CguView.as_view(), name = 'cgu'),
+    path("__reload__/", include("django_browser_reload.urls")),
     # Ajoutez d'autres URLs ici
 ]
 
