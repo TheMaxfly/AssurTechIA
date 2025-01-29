@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
     <div class="min-h-screen bg-[#FBFBFB] py-12 px-4 sm:px-6 lg:px-8">
         <!-- Lien de retour -->
         <a href="{% url 'profil' %}" class="inline-block text-[#e74c3c] hover:underline mb-8">Retour au profil</a>
 
+
         <!-- Titre -->
         <h2 class="text-3xl font-bold text-[#2c3e50] mb-8">Modifier mon profil</h2>
+
 
         <!-- Formulaire -->
         <form method="post" class="bg-[#D4F6FF] p-8 rounded-lg shadow-lg max-w-2xl mx-auto">
             {% csrf_token %}
+
 
             <!-- Champs du formulaire -->
             <div class="space-y-6">
@@ -30,6 +34,7 @@
                     </div>
                 {% endfor %}
             </div>
+
 
             <!-- Bouton de soumission -->
             <button type="submit" class="mt-8 w-full bg-[#FFDDAE] text-[#2c3e50] font-semibold py-3 rounded-lg hover:bg-[#e6c89d] transition duration-300">

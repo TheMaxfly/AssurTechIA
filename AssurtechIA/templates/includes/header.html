@@ -1,0 +1,8 @@
+{% load static %}
+<nav class="flex justify-between items-center w-full h-5">
+    <img src="{% static 'image/LogoIA.webp' %}" alt="LogoAssurtechIA" class="h-12" style="margin-left: 0; border: none; padding: 0;">
+    <ul class="flex space-x-4">
+        <li><a href="{% url 'login' %}" class="bg-blue-300 text-white px-4 py-2 rounded">Connexion</a></li>
+        <li><a href="{% url 'registration' %}" class="bg-blue-300 text-white px-4 py-2 rounded">Inscription</a></li>
+    </ul>
+</nav>

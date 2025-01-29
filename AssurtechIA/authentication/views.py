@@ -176,12 +176,12 @@ class PredictionView(View):
                prediction_charge = round(pre_prediction_charge[0],2)
                print('prediction')
                print(prediction_charge)
-
-            #    prediction = form.save(commit=False)
-            #    prediction.bmi = bmi
-            #    prediction.prediction_charge = prediction_charge
-            #    prediction.user = request.user
-            #    prediction.save()
+               
+               prediction = form.save(commit=False)
+               prediction.bmi = bmi
+               prediction.prediction_charge = prediction_charge
+               prediction.user = request.user
+               prediction.save()
 
                return redirect('profil')
 
