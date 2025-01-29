@@ -1,18 +1,17 @@
 <footer class="bg-blue-200 p-4">
     <div class="flex justify-between items-center">
-        <!-- Partie gauche : "Qui sommes-nous" et "CGU" -->
+        <!-- Partie gauche : "Qui sommes-nous" et "About us" -->
         <div class="flex space-x-6">
-            <a href="#" class="text-gray-700">Qui sommes-nous</a>
+            <a href="#" class="text-gray-700 hover:text-gray-900">Qui sommes-nous</a>
+            <a href="{% url 'aboutus' %}" class="text-gray-700 hover:text-gray-900">About us</a>
         </div>
 
-        <!-- Partie centrale : "CGU" -->
-        <div class="flex-1 text-center">
-            <a href="#" class="text-gray-700">CGU</a>
-        </div>
-
-        <!-- Partie droite : appel d'urgence -->
-        <div>
-            <span class="text-red-600 font-bold">Appel d'urgence</span>
+        <!-- Partie droite : "CGU" et "Client" -->
+        <div class="flex space-x-6 items-center">
+            {% if user.is_authenticated %}
+            <span class="text-gray-700">Client : {{ user.email }}</span>
+            {% endif %}
+            <a href="#" class="text-gray-700 hover:text-gray-900">CGU</a>
         </div>
     </div>
 </footer>
