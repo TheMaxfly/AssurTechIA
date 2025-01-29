@@ -1,12 +1,12 @@
 <footer class="bg-blue-200 p-4">
     <div class="flex justify-between items-center">
-        <!-- Partie gauche : "Qui sommes-nous" et "About us" -->
+        
         <div class="flex space-x-6">
             <a href="#" class="text-gray-700 hover:text-gray-900">Qui sommes-nous</a>
             <a href="{% url 'aboutus' %}" class="text-gray-700 hover:text-gray-900">About us</a>
         </div>
 
-        <!-- Partie droite : "CGU" et "Client" -->
+        
         <div class="flex space-x-6 items-center">
             {% if user.is_authenticated %}
             <span class="text-gray-700">Client : {{ user.email }}</span>
