@@ -4,11 +4,7 @@
 
 {% block content %}
 <div style="background-color: #FBFBFB; padding: 20px; border-radius: 10px; max-width: 600px; margin: auto;">
-    <h1 style="color: #005F99; text-align: center;">Mon profil</h1>
-
-    <div style="text-align: center; margin-bottom: 20px;">
-        <a href="{% url 'home' %}" style="color: #005F99; text-decoration: none; font-weight: bold;">Accueil</a>
-    </div>
+    <h1 style="color: #005F99; text-align: center;"><b>Mon profil</b></h1>
 
     <ul style="list-style: none; padding: 0; text-align: left; background: #C6E7FF; padding: 15px; border-radius: 8px;">
         <li><strong>Pseudonyme :</strong> {{ user.username }}</li>
@@ -21,12 +17,12 @@
         <a href="{% url 'edit_profil' %}" style="display: inline-block; background: #FFDDAE; color: black; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 10px;">Modifier</a>
     </div>
 
-    <h2 style="color: #005F99; margin-top: 40px; text-align: center;">Historique de mes prédictions</h2>
+    <h2 style="color: #005F99; margin-top: 40px; text-align: center;"><b>Historique de prédictions</b></h2>
     <div style="text-align: center; margin-top: 10px;">
         <a href="{% url 'historical' %}" style="display: inline-block; background: #D4F6FF; color: black; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 10px;">Voir les détails</a>
     </div>
 
-    <h2 style="color: #005F99; margin-top: 40px; text-align: center;">Simulation de la prime d'assurance</h2>
+    <h2 style="color: #005F99; margin-top: 40px; text-align: center;"><b>Simulation de la prime d'assurance</b></h2>
     <div style="text-align: center; margin-top: 10px;">
         <a href="{% url 'prediction' %}" style="display: inline-block; background: #D4F6FF; color: black; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; margin-top: 10px;">Lancer une simulation</a>
     </div>
