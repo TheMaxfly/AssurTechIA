@@ -4,11 +4,13 @@
 {% block content %}
     <div class="min-h-screen bg-[#FBFBFB] py-12 px-4 sm:px-6 lg:px-8">
         <!-- Lien de retour -->
-        <a href="{% url 'profil' %}" class="inline-block text-[#e74c3c] hover:underline mb-8">Retour au profil</a>
-
-
-        <!-- Titre -->
-        <h2 class="text-3xl font-bold text-[#2c3e50] mb-8">Modifier mon profil</h2>
+        <div class="text-center">
+            <a href="{% url 'profil' %}" class="mt-4 inline-block text-[#e74c3c] hover:underline"><b>Retour au profil</b></a>
+            <br>
+            <br>
+            <!-- Titre -->
+            <h2 class="text-3xl font-bold text-[#2c3e50] mb-8">Modifier mon profil</h2>
+        </div>
 
 
         <!-- Formulaire -->
@@ -19,7 +21,7 @@
             <!-- Champs du formulaire -->
             <div class="space-y-6">
                 {% for field in form %}
-                    <div class="space-y-2">
+                    <div class="text-center space-y-2">
                         <label class="block text-lg font-semibold text-[#2c3e50]">
                             {{ field.label }}
                         </label>

@@ -13,11 +13,12 @@ class RegistrationForm(forms.ModelForm):
 
    class Meta:
        model = User
-       fields = ['username', 'email', 'password', 'role']
+       fields = ['first_name', 'last_name','email', 'password']
 
    def save(self, commit=True):
        user = super().save(commit=False)
        user.set_password(self.cleaned_data["password"])  
+       user.role = 'customer'
        if commit:
            user.save()
        return user
@@ -25,17 +26,10 @@ class RegistrationForm(forms.ModelForm):
 class UpdateUserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['email', 'username', 'last_name', 'first_name', 'role']
+        fields = ['email', 'last_name', 'first_name']
 
         
 class PredictionForm(forms.ModelForm):
-
-    # age = forms.IntegerField(label='age')
-    # size = forms.IntegerField(label='taille')
-    # weight = forms.IntegerField(label='poids')
-    # number_children = forms.IntegerField(label='nombre d\'enfants')
-    # is_smoker = forms.BooleanField(label='est_il_fumeur')
-    # region = forms.ChoiceField(choices=Prediction.Region.choices, label='Région')
 
     class Meta:
         model = Prediction

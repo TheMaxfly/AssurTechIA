@@ -10,14 +10,15 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from authentication.models import Prediction, User
 from .data.functions_model import InsurancePredictor
-#from selectors import DropFeatureSelector 
+
+# from selectors import DropFeatureSelector
 import os
 import joblib
 import numpy
 import pandas as pd
 import math
 
-import cloudpickle 
+import cloudpickle
 import pickle
 
 
@@ -25,8 +26,9 @@ from django.shortcuts import render
 
 User = get_user_model()
 
+
 def custom_404(request, exception):
-    return render(request, '404.html', status=404)
+    return render(request, "404.html", status=404)
 
 
 class HomeView(TemplateView):
@@ -35,196 +37,217 @@ class HomeView(TemplateView):
 
 class AboutUsView(TemplateView):
     template_name = "authentication/about_us.html"
-    
+
 
 class CguView(TemplateView):
-    
-    template_name="authentication/cgu.html"
+
+    template_name = "authentication/cgu.html"
 
 
 class LogoutView(View):
-    
+
     def get(self, request):
         logout(request)
-        return redirect('home')
+        return redirect("home")
 
 
 class LoginPageView(View):
 
-    template_name = 'authentication/login.html'
+    template_name = "authentication/login.html"
     form_class = LoginForm
 
     def get(self, request):
         form = self.form_class()
-        return render(request, self.template_name, {'form': form})
-    
+        return render(request, self.template_name, {"form": form})
+
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
-            user = User.objects.filter(email=form.cleaned_data['email']).first()
-            if user and user.check_password(form.cleaned_data['password']):
+            user = User.objects.filter(email=form.cleaned_data["email"]).first()
+            if user and user.check_password(form.cleaned_data["password"]):
                 login(request, user)
                 # redirection vers la page profil
-                return redirect('profil')
-        message = 'Identifiants invalides.'
-        return render(request, self.template_name, context={'form': form, 'message': message})
+                return redirect("profil")
+        message = "Identifiants invalides."
+        return render(
+            request, self.template_name, context={"form": form, "message": message}
+        )
 
 
 class RegistrationPageView(View):
-    template_name='authentication/inscription.html'
-    form_class=RegistrationForm
-    success_url = reverse_lazy('login')
+    template_name = "authentication/inscription.html"
+    form_class = RegistrationForm
+    success_url = reverse_lazy("login")
 
     def get(self, request):
         form = self.form_class()
-        return render(request, self.template_name, context={'form': form})
-    
+        return render(request, self.template_name, context={"form": form})
+
     def post(self, request):
         form = self.form_class(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            password = form.cleaned_data['password']
+            password = form.cleaned_data["password"]
             user.set_password(password)
             user.save()
-            login(request, authenticate(
-                email=form.cleaned_data['email'],
-                password=password,
-            ))
-            return redirect('home')
-        return render(request, self.template_name, context={'form': form})
-    
+            login(
+                request,
+                authenticate(
+                    email=form.cleaned_data["email"],
+                    password=password,
+                ),
+            )
+            return redirect("home")
+        return render(request, self.template_name, context={"form": form})
+
     def form_valid(self, form):
-        form.save() 
+        form.save()
         return super().form_valid(form)
+
 
 @login_required
 def ProfilView(request):
     user = request.user
-    return render(request, 'authentication/profil.html', {'user': user})
+    return render(request, "authentication/profil.html", {"user": user})
+
 
 @login_required
 def EditProfil(request):
-    if request.method == 'POST':
-        form = UpdateUserForm(request.POST, instance = request.user)
+    if request.method == "POST":
+        form = UpdateUserForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('profil')
+            return redirect("profil")
     else:
         form = UpdateUserForm(instance=request.user)
-    return render(request, 'authentication/edit_profil.html',{'form': form})
+    return render(request, "authentication/edit_profil.html", {"form": form})
 
 
 @login_required
 def PredictionHistorical(request):
     predictions = Prediction.objects.filter(user=request.user)
-    return render(request, 'authentication/prediction_historical.html', context={"predictions": predictions})
+    return render(
+        request,
+        "authentication/prediction_historical.html",
+        context={"predictions": predictions},
+    )
 
 
 # def calculate_bmi(weight, height):
-#         height_m = height / 100.0  
+#         height_m = height / 100.0
 #         bmi = weight / (height_m ** 2)
 #         return bmi
 
 
 class PredictionView(View):
-   template_name = 'authentication/prediction.html'
+    template_name = "authentication/prediction.html"
 
-   def get(self, request):
-       form = PredictionForm()
-       return render(request, self.template_name, {'form': form})
-  
-   def post(self, request):
-       form = PredictionForm(request.POST)
-       if form.is_valid():
+    def get(self, request):
+        form = PredictionForm()
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request):
+        form = PredictionForm(request.POST)
+        if form.is_valid():
             try:
-               age = form.cleaned_data['age']
-               size = form.cleaned_data['size']
-               weight = form.cleaned_data['weight']
-               number_children = form.cleaned_data['number_children']
-               is_smoker = form.cleaned_data['is_smoker']
-               region = form.cleaned_data['region']
-               genre = form.cleaned_data['genre']
-          
-           # Conversion
-               genre, region, is_smoker = InsurancePredictor.convert_to_english(genre, region, is_smoker)
-               print(f"Converted values: Genre={genre}, Region={region}, Smoker={is_smoker}")
+                age = form.cleaned_data["age"]
+                size = form.cleaned_data["size"]
+                weight = form.cleaned_data["weight"]
+                number_children = form.cleaned_data["number_children"]
+                is_smoker = form.cleaned_data["is_smoker"]
+                region = form.cleaned_data["region"]
+                genre = form.cleaned_data["genre"]
 
-           # Calcul du BMI
-               if size <= 0:
-                   raise ValueError("La taille doit être supérieure à zéro.")
-               bmi = InsurancePredictor.bmi_calculation(weight, size)
-               print(f"Calculated BMI: {bmi}")
-               
-            # Préparation des données pour le modèle
-               input_data = pd.DataFrame({
-                "age": [age],
-                "sex": [genre],
-                "bmi": [bmi],
-                "children": [number_children],
-                "smoker": [is_smoker],
-                "region": [region]
-                })
+                # Conversion
+                genre, region, is_smoker = InsurancePredictor.convert_to_english(
+                    genre, region, is_smoker
+                )
+                print(
+                    f"Converted values: Genre={genre}, Region={region}, Smoker={is_smoker}"
+                )
 
-               model_path = os.path.join(os.path.dirname(__file__), 'data', 'best_model.pkl')
-               with open(model_path, 'rb') as f:
-                base_model = joblib.load(f)
+                # Calcul du BMI
+                if size <= 0:
+                    raise ValueError("La taille doit être supérieure à zéro.")
+                bmi = InsurancePredictor.bmi_calculation(weight, size)
+                print(f"Calculated BMI: {bmi}")
 
-               predictor = InsurancePredictor(base_model)
-               pre_prediction_charge = base_model.predict(input_data)
-               prediction_charge = round(pre_prediction_charge[0],2)
-               print('prediction')
-               print(prediction_charge)
-               
-               prediction = form.save(commit=False)
-               prediction.bmi = bmi
-               prediction.prediction_charge = prediction_charge
-               prediction.user = request.user
-               prediction.save()
+                # Préparation des données pour le modèle
+                input_data = pd.DataFrame(
+                    {
+                        "age": [age],
+                        "sex": [genre],
+                        "bmi": [bmi],
+                        "children": [number_children],
+                        "smoker": [is_smoker],
+                        "region": [region],
+                    }
+                )
 
-               # stockage des données dans la session
-               request.session['age'] = age
-               request.session['size'] = size
-               request.session['weight'] = weight
-               request.session['number_children'] = number_children
-               request.session['is_smoker'] = is_smoker
-               request.session['region'] = region
-               request.session['genre'] = genre
-               request.session['bmi'] = bmi
-               request.session['prediction_charge'] = prediction_charge
+                model_path = os.path.join(
+                    os.path.dirname(__file__), "data", "best_model.pkl"
+                )
+                with open(model_path, "rb") as f:
+                    base_model = joblib.load(f)
 
-               return redirect('result')
+                predictor = InsurancePredictor(base_model)
+                pre_prediction_charge = base_model.predict(input_data)
+                prediction_charge = round(pre_prediction_charge[0], 2)
+                print("prediction")
+                print(prediction_charge)
+
+                prediction = form.save(commit=False)
+                prediction.bmi = bmi
+                prediction.prediction_charge = prediction_charge
+                prediction.user = request.user
+                prediction.save()
+
+                # stockage des données dans la session
+                request.session["age"] = age
+                request.session["size"] = size
+                request.session["weight"] = weight
+                request.session["number_children"] = number_children
+                request.session["is_smoker"] = is_smoker
+                request.session["region"] = region
+                request.session["genre"] = genre
+                request.session["bmi"] = bmi
+                request.session["prediction_charge"] = prediction_charge
+
+                return redirect("result")
 
             except Exception as e:
-               error_message = f"Une erreur s'est produite : {str(e)}"
-               print(f"Erreur : {error_message}")
-               context = {
-               'form': form,
-               'error_message': error_message
-                }
-               return render(request, self.template_name, context)
+                error_message = f"Une erreur s'est produite : {str(e)}"
+                print(f"Erreur : {error_message}")
+                context = {"form": form, "error_message": error_message}
+                return render(request, self.template_name, context)
 
-       return render(request, self.template_name, {'form': form})
+        return render(request, self.template_name, {"form": form})
+
 
 @login_required
 def prediction_result(request):
-    age = request.session.get('age')
-    size = request.session.get('size')
-    weight = request.session.get('weight')
-    number_children = request.session.get('number_children')
-    is_smoker = request.session.get('is_smoker')
-    region = request.session.get('region')
-    genre = request.session.get('genre')
-    bmi = request.session.get('bmi')
-    prediction_charge = request.session.get('prediction_charge')
+    age = request.session.get("age")
+    size = request.session.get("size")
+    weight = request.session.get("weight")
+    number_children = request.session.get("number_children")
+    is_smoker = request.session.get("is_smoker")
+    region = request.session.get("region")
+    genre = request.session.get("genre")
+    bmi = request.session.get("bmi")
+    prediction_charge = request.session.get("prediction_charge")
 
-    return render(request, 'authentication/result.html', {
-        'age':age, 
-        'size':size, 
-        'weight':weight, 
-        'number_children':number_children,
-        'is_smoker':is_smoker,
-        'region':region,
-        'genre':genre,
-        'bmi':bmi,
-        'prediction_charge':prediction_charge
-    })
+    return render(
+        request,
+        "authentication/result.html",
+        {
+            "age": age,
+            "size": size,
+            "weight": weight,
+            "number_children": number_children,
+            "is_smoker": is_smoker,
+            "region": region,
+            "genre": genre,
+            "bmi": bmi,
+            "prediction_charge": prediction_charge,
+        },
+    )

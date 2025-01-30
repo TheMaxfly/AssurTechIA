@@ -8,8 +8,10 @@
     <div class="min-h-screen bg-[#FBFBFB] py-12 px-4 sm:px-6 lg:px-8">
         <!-- En-tête -->
         <div class="text-center">
-            <h1 class="text-4xl font-bold text-[#2c3e50]">Historique des prédictions</h1>
             <a href="{% url 'profil' %}" class="mt-4 inline-block text-[#e74c3c] hover:underline"><b>Retour au profil</b></a>
+            <br>
+            <br>
+            <h1 class="text-4xl font-bold text-[#2c3e50]">Historique des prédictions</h1>
         </div>
 
         <!-- Liste des prédictions -->
@@ -44,11 +46,11 @@
                         <div class="space-y-4">
                             <div class="bg-[#C6E7FF] p-4 rounded-lg">
                                 <p class="font-semibold text-[#2c3e50]">Taille :</p>
-                                <p class="text-[#2c3e50]">{{ prediction.size }}</p>
+                                <p class="text-[#2c3e50]">{{ prediction.size }} CM</p>
                             </div>
                             <div class="bg-[#C6E7FF] p-4 rounded-lg">
                                 <p class="font-semibold text-[#2c3e50]">Poids :</p>
-                                <p class="text-[#2c3e50]">{{ prediction.weight }}</p>
+                                <p class="text-[#2c3e50]">{{ prediction.weight }} KG</p>
                             </div>
                             <div class="bg-[#C6E7FF] p-4 rounded-lg">
                                 <p class="font-semibold text-[#2c3e50]">Nombre d'enfants :</p>
