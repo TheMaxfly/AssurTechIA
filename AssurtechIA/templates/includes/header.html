@@ -1,8 +1,18 @@
 {% load static %}
 <nav class="flex justify-between items-center w-full h-5">
-    <img src="{% static 'image/LogoIA.webp' %}" alt="LogoAssurtechIA" class="h-12" style="margin-left: 0; border: none; padding: 0;">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'image/LogoAI.png' %}" alt="LogoAssurtechIA" class="h-12" style="margin-left: 0; border: none; padding: 0;">
+    </a>
+    {% if user.is_authenticated %}
     <ul class="flex space-x-4">
-        <li><a href="{% url 'login' %}" class="bg-blue-300 text-white px-4 py-2 rounded">Connexion</a></li>
-        <li><a href="{% url 'registration' %}" class="bg-blue-300 text-white px-4 py-2 rounded">Inscription</a></li>
+        <li><a href="{% url 'profil' %}" class="bg-blue-300 text-white px-4 py-2 rounded">Mon profil</a></li>
+        <li><a href="{% url 'prediction' %}" class="bg-blue-300 text-white px-4 py-2 rounded">Prédire</a></li>
+        <li><a href="{% url 'logout' %}" class="bg-blue-300 text-white px-4 py-2 rounded">Se déconnecter</a></li>
     </ul>
+    {% else %}
+    <ul class="flex space-x-4">
+        <li><a href="{% url 'login' %}" class="bg-blue-300 text-white px-4 py-2 rounded">Se connecter</a></li>
+        <li><a href="{% url 'registration' %}" class="bg-blue-300 text-white px-4 py-2 rounded">S'inscrire</a></li>
+    </ul>
+    {% endif %}
 </nav>
