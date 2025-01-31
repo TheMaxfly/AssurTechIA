@@ -18,6 +18,14 @@
         {% include 'includes/header.html' %}
     </header>
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <main class="w-full h-screen">
         {% block content %}{% endblock %}
     <main>

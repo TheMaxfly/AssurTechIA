@@ -23,6 +23,7 @@ import pickle
 
 
 from django.shortcuts import render
+from django.contrib import messages
 
 User = get_user_model()
 
@@ -66,6 +67,7 @@ class LoginPageView(View):
             user = User.objects.filter(email=form.cleaned_data["email"]).first()
             if user and user.check_password(form.cleaned_data["password"]):
                 login(request, user)
+                messages.success(request, "Connexion réussie ! Bienvenue 👋")
                 # redirection vers la page profil
                 return redirect("profil")
         message = "Identifiants invalides."
@@ -97,7 +99,8 @@ class RegistrationPageView(View):
                     password=password,
                 ),
             )
-            return redirect("home")
+            messages.success(request, "Succès de l'inscription 😁")
+            return redirect("profil")
         return render(request, self.template_name, context={"form": form})
 
     def form_valid(self, form):
