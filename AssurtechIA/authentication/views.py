@@ -23,6 +23,7 @@ import pickle
 
 
 from django.shortcuts import render
+# import du module pour les messages flash
 from django.contrib import messages
 
 User = get_user_model()

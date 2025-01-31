@@ -19,7 +19,7 @@
         <div class="sm:col-span-3">
           <label for="genre" class="block text-sm/6 font-medium text-gray-900">De quel genre êtes-vous ?</label>
           <div class="mt-2 grid grid-cols-1">
-            <select id="genre" name="genre" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <select id="genre" name="genre" required class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
               {% for genre, label in form.fields.genre.choices %}
               <option value="{{ genre }}" {% if field.value == genre %}selected{% endif %}>{{ label }}</option>
               {% endfor %}
@@ -58,7 +58,7 @@
         <div class="sm:col-span-3">
           <label for="is_smoker" class="block text-sm/6 font-medium text-gray-900">Est-ce que vous fumez ?</label>
           <div class="mt-2 grid grid-cols-1">
-            <select id="is_smoker" name="is_smoker" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <select id="is_smoker" name="is_smoker" required class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
               {% for is_smoker, label in form.fields.is_smoker.choices %}
               <option value="{{ is_smoker }}" {% if field.value == is_smoker %}selected{% endif %}>{{ label }}</option>
               {% endfor %}
@@ -69,7 +69,7 @@
         <div class="sm:col-span-3">
           <label for="region" class="block text-sm/6 font-medium text-gray-900">Dans quelle région habitez-vous ?</label>
           <div class="mt-2 grid grid-cols-1">
-            <select id="region" name="region" class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+            <select id="region" name="region" required class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-1.5 pl-3 pr-8 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
               {% for region, label in form.fields.region.choices %}
               <option value="{{ region }}" {% if field.value == region %}selected{% endif %}>{{ label }}</option>
               {% endfor %}
